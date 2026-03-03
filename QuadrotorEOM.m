@@ -1,8 +1,25 @@
+%{
+Task: 1 
+Contributor(s): Jacob Legg, Jay Berlin
+Course number: ASEN 3801
+File name: QuadrotorEOM.m
+Created: 03/03/2026
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Goal: Setup for Integration
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Methodology: Dynamics and Kinematics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+Inputs: Constants, Time, State Vector
+
+Outputs: Derivative of State Vector
+
+%}
 function var_dot = QuadrotorEOM(t, var, g, m, I, d, km, nu, mu, motor_forces)
 var_dot = zeros(12, 1);
 x = var(1);
 y = var(2);
 z = var(3);
+% Assumed to be in Radians
 phi = var(4);
 theta = var(5);
 psi = var(6);
@@ -23,12 +40,12 @@ I_y = I(2,2);
 I_z = I(3,3);
    
 % DCM
-cPs = cosd(psi);
-sPs = sind(psi);
-cTh = cosd(theta);
-sTh = sind(theta);
-cPh = cosd(phi);
-sPh = sind(phi);
+cPs = cos(psi);
+sPs = sin(psi);
+cTh = cos(theta);
+sTh = sin(theta);
+cPh = cos(phi);
+sPh = sin(phi);
 
 rotationEBd = [cTh*cPs, cTh*sPs, -sTh; 
                cPh*sTh*sPh-sPs*cPh, cPh*cPs + sPh*sPs*sTh, sPh*cTh; 
@@ -51,7 +68,8 @@ var_dot(4:6) = euler_dot;
 
 F_gravity = m*g*[-sTh; cTh*sPh; cTh*cPh];
 F_c = [0;0;(-f1-f2-f3-f4)];
-F_net = F_gravity + F_c;
+F_drag = -nu*norm(velE)*velE;
+F_net = F_gravity + F_c + F_drag;
 
 var_dot(7:9) = F_net / m - cross(omegaE,velE); % Velocity derivatives
 
@@ -60,9 +78,10 @@ L_c = d/sqrt(2)*(-f1-f2+f3+f4);
 M_c = d/sqrt(2)*(f1-f2-f3+f4);
 N_c = km*(f1-f2+f3-f4);
 I_inv = [1/I_x 0 0; 0 1/I_y 0; 0 0 1/I_z];
-control_moment = [L_c/I_x; M_c/I_y; N_c/I_z];
+control_moment = [L_c; M_c; N_c];
+drag_moment = -mu*norm(omegaE)*omegaE;
 
-angular_acceleration = I_inv * (control_moment - cross(omegaE, I * omegaE)); 
+angular_acceleration = I_inv * (drag_moment + control_moment - cross(omegaE, I * omegaE)); 
 var_dot(10:12) = angular_acceleration; % Angular velocity derivatives
 
 
