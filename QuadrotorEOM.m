@@ -50,8 +50,8 @@ var_dot(4:6) = euler_dot;
 % Compute the forces and torques acting on the quadrotor
 
 F_gravity = m*g*[-sTh; cTh*sPh; cTh*cPh];
-F_thrust = [0;0;(-f1-f2-f3-f4)];
-F_net = F_gravity + F_thrust;
+F_c = [0;0;(-f1-f2-f3-f4)];
+F_net = F_gravity + F_c;
 
 var_dot(7:9) = F_net / m - cross(omegaE,velE); % Velocity derivatives
 
