@@ -1,6 +1,6 @@
 %{
 Task: 2.2
-Contributor(s): Ben Adams
+Contributor(s): 
 Course number: ASEN 3801
 File name: QuadrotorEOM_Linearized.m
 Created: 03/03/2026

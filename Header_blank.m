@@ -1,9 +1,9 @@
 %{
-Task: 2.5
+Task: 
 Contributor(s): 
 Course number: ASEN 3801
-File name: QuadrotorEOMwithRateFeedback.m
-Created: 03/03/2026
+File name: .m
+Created: 00/00/2026
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Goal: Add the feedback controller to your nonlinear quadrotor equations of motion.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -14,5 +14,3 @@ Inputs:
 Outputs:
 
 %}
-function var_dot = QuadrotorEOMwithRateFeedback(t, var, g, m, I, nu, mu)
-end
