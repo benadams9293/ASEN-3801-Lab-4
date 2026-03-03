@@ -1,8 +1,7 @@
 %{
-Task: 2.2
-Contributor(s): Ben Adams
+Contributor(s): 
 Course number: ASEN 3801
-File name: QuadrotorEOM_Linearized.m
+File name: Lab4_main.m
 Created: 03/03/2026
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Goal: linearized model of the full quadrotor dynamics
@@ -11,16 +10,6 @@ Created: 03/03/2026
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 %}
 
-function var_dot = QuadrotorEOM_Linearized(t, var, g, m, I, deltaFc, deltaGc)
-%{
-Inputs:
-var = 12x1 column matrix
-deltaFc = deviation from the steady hover trim condition
-deltaGc = deviation from the steady hover trim condition
-
-Outputs:
-
-
-%}
-
-end
+%% Task 2.1
+nonlinear_IC = []
+x_dot = QuadrotorEOM()

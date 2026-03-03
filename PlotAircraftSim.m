@@ -1,6 +1,6 @@
 %{
 Task: 1.1
-Contributor(s): Ben Adams, Jacob Legg, Jeremy Li, Jeff Wik, Jay Berlin
+Contributor(s): Jacob Legg, Jeremy Li, Jeff Wik, Jay Berlin
 Course number: ASEN 3801
 File name: PlotAircraftSim.m
 Created: 03/03/2026
