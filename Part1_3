@@ -33,7 +33,7 @@ Zc = -m * g;
 control_input_array = repmat([Zc; 0; 0; 0], 1, length(t_out));
 
 % 6. Plot the Results
-fig_nums = [1, 2, 3, 4, 5, 6]; % The 6 figure numbers required by your function
+fig_nums = [1, 2, 3, 4, 5, 6]; % The 6 figure numbers required
 plot_color = 'g-';             % Green line for Task 1.3 hover
 
 % Call the plotting function from Task 1.1
