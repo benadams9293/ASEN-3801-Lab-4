@@ -9,7 +9,9 @@ Created: 03/03/2026
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Methodology: Dynamics and Kinematics
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
-Inputs: Constants, Time, State Vector
+Inputs: t = Time (s), var = State Vector (12x1) [m, rad, m/s, rad/s],
+Constants: g (m/s^2), m (kg), I (kg m^2), d (m), km (m), nu (N*s^2/m^2), 
+mu (N*m*s^2/rad^2); motor_forces = 4x1 of the motor forces (N)
 
 Outputs: Derivative of State Vector
 
