@@ -1,3 +1,4 @@
+function var_dot = QuadrotorEOM_Linearized(t, var, g, m, I, deltaFc, deltaGc)
 %{
 Task: 2.2
 Contributor(s): 
@@ -23,10 +24,32 @@ deltaFc = deviation from the steady hover trim condition
 deltaGc = deviation from the steady hover trim condition
 
 Outputs:
-
+var_dot = 12x1 rate of change for a/c state vector
 %}
 
-function var_dot = QuadrotorEOM_Linearized(t, var, g, m, I, deltaFc, deltaGc)
+x_dot = var(7);
+y_dot = var(8);
+z_dot = var(9);
+phi_dot = var(10);
+theta_dot = var(11);
+psi_dot = var(12);
+u_dot = -g*var(5);
+v_dot = g*var(4);
+w_dot = (1/m)*deltaFc(3);
+p_dot = (1/I(1,1))*deltaGc(1);
+q_dot = (1/I(2,2))*deltaGc(2);
+r_dot = (1/I(3,3))*deltaGc(3);
 
-
+var_dot = [x_dot;
+           y_dot;
+           z_dot;
+           phi_dot;
+           theta_dot;
+           psi_dot;
+           u_dot;
+           v_dot;
+           w_dot;
+           p_dot;
+           q_dot;
+           r_dot];
 end
