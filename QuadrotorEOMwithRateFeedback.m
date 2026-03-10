@@ -1,7 +1,7 @@
 %{
 Contributor(s): Jeremy Li
 Course number: ASEN 3801
-File name: L3801Lab4_14
+File name: QuadrotorEOMwithRateFeedback
 Created: 03/10/2026
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 - Goal: new equation of motion function with the feedback controller from 2.4 
@@ -25,4 +25,5 @@ function var_dot = QuadrotorEOMwithRateFeedback(t, var, g, m, I, nu, mu)
     % 3. Feed motor thrusts into the nonlinear EOM (1.3)
     var_dot = QuadrotorEOM(t, var, g, m, I, d, km, nu, mu, motor_forces);
 end
+
 
