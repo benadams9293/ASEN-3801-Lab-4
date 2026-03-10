@@ -17,7 +17,7 @@ d = 0.060;                  % Radial distance to propeller (m)
 km = 0.0024;                % Control moment coefficient (N*m/N)
 nu = 1e-3;                  % Aerodynamic force coefficient
 mu = 2e-6;                  % Aerodynamic moment coefficient
-
+fig_nums_0 = [1, 2, 3, 4, 5, 6]; % The 6 figure numbers required
 
 %% Task 2.1
 var0_hover = [0; 0; -100; 0; 0; 0; 0; 0; 0; 0; 0; 0];     %zeros(12, 1); 
@@ -28,7 +28,7 @@ var0_changes = ...
     0 0 0 0 0 0;
     0 0 0 0 0 0;
     deg2rad(5) 0 0 0 0 0; %roll
-    0 deg2rad(5) 0 0 0; %pitch
+    0 deg2rad(5) 0 0 0 0; %pitch
     0 0 deg2rad(5) 0 0 0; %yaw
     0 0 0 0 0 0;
     0 0 0 0 0 0;
@@ -47,10 +47,14 @@ for i = 1:6
     
     % 3. Setup Simulation
     tspan = [0 10]; % in [s]
+
+    % Deltas
+    deltaFc = zeros(3,1);
+    deltaGc = zeros(3,1);
     
     % 4. Run ode45 with the updated EOM (now including drag)
     [t_out_nonlinear, state_out_nonlinear] = ode45(@(t,var) QuadrotorEOM(t, var, g, m, I, d, km, nu, mu, trim_motor_forces), tspan, var0);
-    [t_out_linear, state_out_linear] = ode45(@(t,var) QuadrotorEOM_Linearized(t, var, g, m, I, d, km, nu, mu, trim_motor_forces), tspan, var0);
+    [t_out_linear, state_out_linear] = ode45(@(t,var) QuadrotorEOM_Linearized(t, var, g, m, I, deltaFc, deltaGc), tspan, var0);
     
     % Format the output array to match PlotAircraftSim requirements (12 x n)
     aircraft_state_array_nonlinear = state_out_nonlinear';
@@ -60,12 +64,14 @@ for i = 1:6
     % 5. Calculate Control Inputs for Plotting
     % For steady hover, Zc = -mg, and Lc, Mc, Nc are 0. 
     Zc = -m * g;
-    control_input_array = repmat([Zc; 0; 0; 0], 1, length(t_out));
+    control_input_array_nonlinear = repmat([Zc; 0; 0; 0], 1, length(t_out_nonlinear));
+    control_input_array_linear = repmat([Zc; 0; 0; 0], 1, length(t_out_linear));
     
+
     % Plotting
-    fig_nums = [1, 2, 3, 4, 5, 6]; % The 6 figure numbers required
-    plot_color = ['g-','b-'];             % Green line for Task 1.3 hover
+    fig_nums = fig_nums_0 + 6*(i-1);
 
-    PlotAircraftSim(t_out_linear',t_out_nonlinear', aircraft_state_array_linear,aircraft_state_array_nonlinear, control_input_array, fig_nums, plot_color);
-
+    %PlotAircraftSim(t_out_linear',t_out_nonlinear', aircraft_state_array_linear,aircraft_state_array_nonlinear, control_input_array, fig_nums, plot_color);
+    PlotAircraftSim(t_out_linear', aircraft_state_array_linear, control_input_array_linear, fig_nums, 'r-')
+    PlotAircraftSim(t_out_nonlinear', aircraft_state_array_nonlinear, control_input_array_nonlinear, fig_nums, 'b-')
 end
