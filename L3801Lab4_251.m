@@ -10,6 +10,9 @@ Created: 03/10/2026
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
 %}
 
+% =========================================================================
+% Lab Task 2.5: Feedback Control Implementation (ode45 Only)
+% =========================================================================
 clear; clc; close all;
 
 % Constants
@@ -40,7 +43,10 @@ var0_changes = ...
     0 0 0 0 .1 0; % 5: pitch rate
     0 0 0 0 0 .1];% 6: yaw rate
 
-% Loop through the rate deviations
+% --- Relax ode45 tolerances to prevent near-zero crashing ---
+options = odeset('RelTol', 1e-3, 'AbsTol', 1e-6);
+
+% Loop through the rate deviations (columns 4, 5, and 6)
 for i = 4:6
     var0 = var0_hover + var0_changes(:,i);
     
@@ -48,9 +54,10 @@ for i = 4:6
     trim_thrust_per_motor = (m * g) / 4; 
     trim_motor_forces = [1; 1; 1; 1] * trim_thrust_per_motor;
     Zc = -m * g;
-    
+
+    % Run ode45 for both, passing the relaxed options to the controlled system
     [t_out_uncon, state_out_uncon] = ode45(@(t,var) QuadrotorEOM(t, var, g, m, I, d, km, nu, mu, trim_motor_forces), tspan, var0);
-    [t_out_con, state_out_con] = ode15s(@(t,var) QuadrotorEOMwithRateFeedback(t, var, g, m, I, nu, mu), tspan, var0);
+    [t_out_con, state_out_con] = ode45(@(t,var) QuadrotorEOMwithRateFeedback(t, var, g, m, I, nu, mu), tspan, var0, options);
     
     % Format the output array
     aircraft_state_array_uncon = state_out_uncon';
@@ -84,6 +91,7 @@ for i = 4:6
         if motor == 4; xlabel('Time (s)'); end
     end
 end
+
 
 
 
