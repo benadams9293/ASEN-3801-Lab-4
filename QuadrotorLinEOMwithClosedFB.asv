@@ -16,9 +16,9 @@ function var_dot = QuadrotorLinEOMwithClosedFB(t, var, g, m, I, nu, mu)
     d = 0.060; % (m)  Radial distance from CG to propeller 
     km = 0.0024; %(N*m/N)  Control moment coefficient
     
-    % 1. Get commanded control forces and moments  (3.2)
+    % 1. Get commanded control forces and moments  (2.3)
     [Fc, Gc] = InnerLoopFeedback(var, m, g);
     
-    % 2. Feed control moments and forces linear EOM (2.2)
+    % 2. Feed colinear EOM (1.3)
     var_dot = QuadrotorEOM_Linearized(t, var, g, m, I, Fc, Gc);
 end
