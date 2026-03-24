@@ -11,7 +11,7 @@ Created: 03/24/2026
 %}
 
 % Lab Task 3.3
-function var_dot = QuadrotorEOMwithRateFeedback(t, var, g, m, I, nu, mu)
+function var_dot = QuadrotorLinEOMwithClosedFB(t, var, g, m, I, nu, mu)
     % Hardcode quadrotor geometry and constants missing from signature
     d = 0.060; % (m)  Radial distance from CG to propeller 
     km = 0.0024; %(N*m/N)  Control moment coefficient
@@ -23,5 +23,5 @@ function var_dot = QuadrotorEOMwithRateFeedback(t, var, g, m, I, nu, mu)
     motor_forces = ComputeMotorForces(Fc, Gc, d, km);
     
     % 3. Feed motor thrusts into the nonlinear EOM (1.3)
-    var_dot = QuadrotorEOM(t, var, g, m, I, d, km, nu, mu, motor_forces);
+    var_dot = QuadrotorEOM_Linearized(t, var, g, m, I, d, km, nu, mu, motor_forces);
 end
