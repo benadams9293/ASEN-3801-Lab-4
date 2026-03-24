@@ -11,11 +11,7 @@ Created: 03/24/2026
 %}
 
 % Lab Task 3.3
-function var_dot = QuadrotorLinEOMwithClosedFB(t, var, g, m, I, nu, mu)
-    % Hardcode quadrotor geometry and constants missing from signature
-    d = 0.060; % (m)  Radial distance from CG to propeller 
-    km = 0.0024; %(N*m/N)  Control moment coefficient
-    
+function var_dot = QuadrotorLinEOMwithClosedFB(t, var, g, m, I)
     % 1. Get commanded control forces and moments  (3.2)
     [Fc, Gc] = InnerLoopFeedback(var, m, g);
     
