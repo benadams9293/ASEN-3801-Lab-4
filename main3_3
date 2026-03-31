@@ -1,0 +1,102 @@
+clc;
+clear all;
+close all;
+
+
+%{
+Task: 3.2
+Contributor(s): Jay Berlin
+Course number: ASEN 3801
+File name: InnerLoopFeedback.m
+Created: 03/31/2026
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Goal: Create a function that generates the plots for questions 3.3 and
+3.4
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+- Methodology: 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ 
+
+%}
+% Constants
+m = 0.068;                  % Mass (kg)
+g = 9.81;                   % Gravity (m/s^2)
+I = diag([5.8e-5, 7.2e-5, 1.0e-4]); % Inertia matrix (kg*m^2)
+d = 0.060;                  % Radial distance to propeller (m)
+km = 0.0024;                % Control moment coefficient (N*m/N)
+nu = 1e-3;                  % Aerodynamic force coefficient
+mu = 2e-6;                  % Aerodynamic moment coefficient
+fig_nums_0 = [1, 2, 3, 4, 5, 6]; % The 6 figure numbers required
+
+
+
+var0_hover = [0; 0; -100; 0; 0; 0; 0; 0; 0; 0; 0; 0];     %zeros(12, 1); 
+tspan = [0 10]; % in [s]
+
+
+var0_changes=[
+    0 0 0 0; %x
+    0 0 0 0; %y
+    0 0 0 0; %z
+    deg2rad(5) 0 0 0; %roll
+    0 deg2rad(5) 0 0; %pitch
+    0 0 0 0; %yaw
+    0 0 0 0; %u
+    0 0 0 0; %v
+    0 0 0 0; %w
+    0 0 0.1 0; %p
+    0 0 0 0.1; %q
+    0 0 0 0; %r
+
+    ];
+
+
+
+
+
+for i = 1:4
+    var0_hover = [0; 0; -100; 0; 0; 0; 0; 0; 0; 0; 0; 0];     %zeros(12, 1); 
+    var0 = var0_hover+var0_changes(:,i);
+
+    % Calculate trim motor forces for steady hover
+    trim_thrust_per_motor = (m * g) / 4; % Total thrust must equal weight
+    trim_motor_forces = [1; 1; 1; 1] * trim_thrust_per_motor;
+    
+    % 3. Setup Simulation
+    tspan = [0 10]; % in [s]
+
+    % Deltas
+    deltaFc = zeros(3,1);
+    deltaGc = zeros(3,1);
+    
+    % 4. Run ode45 with the updated EOM (now including drag)
+    [t_out_nonlinear, state_out_nonlinear] = ode45(@(t,var) QuadrotorEOMwithClosedFB(t, var, g, m, I,nu, mu), tspan, var0);
+    [t_out_linear, state_out_linear] = ode45(@(t,var) QuadrotorLinEOMwithClosedFB(t, var, g, m, I), tspan, var0);
+    
+    for j=1:length(state_out_nonlinear)
+        
+        if(state_out_nonlinear(j,3)>=0)
+
+            state_out_nonlinear(j,3)=0;
+        end
+    end
+
+
+    % Format the output array to match PlotAircraftSim requirements (12 x n)
+    aircraft_state_array_nonlinear = state_out_nonlinear';
+    aircraft_state_array_linear = state_out_linear';
+    
+    
+    % 5. Calculate Control Inputs for Plotting
+    % For steady hover, Zc = -mg, and Lc, Mc, Nc are 0. 
+    Zc = -m * g;
+    control_input_array_nonlinear = repmat([Zc; 0; 0; 0], 1, length(t_out_nonlinear));
+    control_input_array_linear = repmat([Zc; 0; 0; 0], 1, length(t_out_linear));
+    
+
+    % Plotting
+    fig_nums = fig_nums_0 + 6*(i-1);
+
+    %PlotAircraftSim(t_out_linear',t_out_nonlinear', aircraft_state_array_linear,aircraft_state_array_nonlinear, control_input_array, fig_nums, plot_color);
+    PlotAircraftSim(t_out_linear', aircraft_state_array_linear, control_input_array_linear, fig_nums, 'r-',i,true)
+    PlotAircraftSim(t_out_nonlinear', aircraft_state_array_nonlinear, control_input_array_nonlinear, fig_nums, 'b-',i,true)
+end
