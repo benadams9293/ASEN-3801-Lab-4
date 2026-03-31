@@ -4,8 +4,8 @@ close all;
 
 
 %{
-Task: 3.2
-Contributor(s): Jay Berlin
+Task: 3.3-4
+Contributor(s): Jay Berlin, Ben Adams
 Course number: ASEN 3801
 File name: InnerLoopFeedback.m
 Created: 03/31/2026
