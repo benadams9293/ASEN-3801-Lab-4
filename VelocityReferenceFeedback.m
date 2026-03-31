@@ -1,6 +1,6 @@
 function [Fc, Gc] = VelocityReferenceFeedback(var, m, g, t)
 %{
-Task: 3.2
+Task: 3.6
 Contributor(s): Ben Adams, Jacob Legg, Jeremy Li, Jeff Wik, Jay Berlin
 Course number: ASEN 3801
 File name: VelocityReferenceFeedback.m
