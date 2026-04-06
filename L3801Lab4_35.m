@@ -27,8 +27,8 @@ for i=1:1000
     A_x = [0,9.81,0;0,0,1;-k3(i)/I_x,-k2x/I_x,-k1x/I_x];
     % Longitudinal
     A_y = [0,-9.81,0;0,0,1;k3(i)/I_y,-k2y/I_y,-k1y/I_y];
-    [~,D] = eig(A_x);
-    % [~,D] = eig(A_y);
+    % [~,D] = eig(A_x);
+    [~,D] = eig(A_y);
     % Extract eigenvalues for further analysis
     eigenvalue1(i) = D(1,1);
     eigenvalue2(i) = D(2,2);
@@ -37,12 +37,12 @@ end
 figure;
 hold on;
 % plot(eigenvalue1,0)
-plot(eigenvalue2)
-plot(eigenvalue3)
+plot(eigenvalue2, "LineWidth", 2)
+plot(eigenvalue3, "LineWidth", 2)
 legend('Lambda 2','Lambda 3')
 title("Longitudinal Locus Plot")
 chosen = length(eigenvalue2) - length(find(abs(eigenvalue2)<=0.8));
-% print("locusPlotLong", '-dpng')
+print("locusPlotLong", '-dpng')
 % Store the eigenvalue corresponding to the chosen index for further analysis
 selectedk3 = k3(chosen);
 selectedTau = -1/eigenvalue2(chosen);
