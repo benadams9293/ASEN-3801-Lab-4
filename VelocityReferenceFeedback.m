@@ -50,7 +50,7 @@ function [Fc, Gc] = VelocityReferenceFeedback(t, var)
     
     Lc = -k1_lat*p - k2_lat*phi + k3_lat*(v_r-v); % Control Moments
     
-    Mc = -k1_lon*q - k2_lon*theta - k3_lon*(u_r-u); % Longitudinal Control
+    Mc = -k1_lon*q - k2_lon*theta + k3_lon*(u_r-u); % Longitudinal Control
     
     Nc = -k_yaw*r; % Yaw Control (from 2.3)
     
