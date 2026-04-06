@@ -76,31 +76,3 @@ for i = 1:6
     PlotAircraftSim(t_out_nonlinear', aircraft_state_array_nonlinear, control_input_array_nonlinear, fig_nums, 'b-')
 end
 
-%% Section 3.5
-I_x = 5.8*10^-5;
-I_y = 7.2*10^-5;
-k1x = 3.98*10^-4;
-k2x = 5.63*10^-4;
-k1y = 4.94*10^-4;
-k2y = 6.99*10^-4;
-k3 = linspace(1*10^-4,1*10^-5,1000);
-for i=1:1000
-    A_x = [0,9.81,0;0,0,1;-k3(i)/I_x,-k2x/I_x,-k1x/I_x];
-    A_y = [0,9.81,0;0,0,1;-k3(i)/I_y,-k2y/I_y,-k1y/I_y];
-    [~,D] = eig(A_x);
-    % [~,D] = eig(A_y);
-    % Extract eigenvalues for further analysis
-    eigenvalue1(i) = D(1,1);
-    eigenvalue2(i) = D(2,2);
-    eigenvalue3(i) = D(3,3);
-end
-figure;
-hold on;
-% plot(eigenvalue1)
-plot(eigenvalue2)
-plot(eigenvalue3)
-legend('2','3')
-chosen = length(eigenvalue2) - length(find(abs(eigenvalue2)<=0.8));
-% Store the eigenvalue corresponding to the chosen index for further analysis
-selectedk3 = k3(chosen);
-selectedTau = -1/eigenvalue2(chosen);
