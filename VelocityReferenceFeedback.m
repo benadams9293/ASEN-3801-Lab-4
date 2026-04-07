@@ -48,7 +48,7 @@ function [Fc, Gc] = VelocityReferenceFeedback(t, var)
     
     Fc = [0; 0; -m*g]; % Control Forces
     
-    Lc = -k1_lat*p - k2_lat*phi + k3_lat*(v_r-v); % Control Moments
+    Lc = -k1_lat*p - k2_lat*phi + k3_lat*(v_r-v); % Lateral Control Moments
     
     Mc = -k1_lon*q - k2_lon*theta + k3_lon*(u_r-u); % Longitudinal Control
     

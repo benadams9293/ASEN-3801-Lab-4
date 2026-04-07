@@ -35,7 +35,7 @@ trim_motor_forces = [1; 1; 1; 1] * trim_thrust_per_motor;
 tspan = [0 10]; % in [s]
 
 % 4. Run ode45 with the updated EOM (now including drag)
-[t_out, state_out] = ode45(@(t,var) QuadrotorEOM1(t, var, g, m, I, d, km, nu, mu, trim_motor_forces), tspan, var0_hover);
+[t_out, state_out] = ode45(@(t,var) QuadrotorEOM(t, var, g, m, I, d, km, nu, mu, trim_motor_forces), tspan, var0_hover);
 
 % Format the output array to match PlotAircraftSim requirements (12 x n)
 aircraft_state_array = state_out';
